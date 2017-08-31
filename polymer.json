@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "src/**/*",
+    "bower.json",
+    "favicon.png"
+    ],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  },
+  "builds": [
+    {
+      "addServiceWorker": true
+    }
+  ]
+}

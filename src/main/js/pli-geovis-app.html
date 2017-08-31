@@ -1,0 +1,36 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="pli-geovis-control.html">
+<link rel="import" href="pli-geovis-map.html">
+
+<dom-module id="pli-geovis-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      pli-geovis-map {
+        height: calc(100vh - 16px);
+      }
+    </style>
+    <pli-geovis-control geohash="{{bGeohash}}" latitude="{{bLatitude}}" longitude="{{bLongitude}}"></pli-geovis-control>
+    <pli-geovis-map 
+      api-key="please-fill-in-your-google-map-key-here"
+      marker-geohash="{{bGeohash}}"
+      marker-latitude="{{bLatitude}}"
+      marker-longitude="{{bLongitude}}">
+    </pli-geovis-map>
+  </template>
+
+  <script>
+    class PliGeovisApp extends Polymer.Element {
+      static get is() { return 'pli-geovis-app'; }
+      static get properties() {
+        return {
+        };
+      }
+    }
+
+    window.customElements.define(PliGeovisApp.is, PliGeovisApp);
+  </script>
+</dom-module>

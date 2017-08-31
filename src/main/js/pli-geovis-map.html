@@ -1,0 +1,155 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/google-map/google-map-elements.html">
+
+<dom-module id="pli-geovis-map">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      google-map {
+        height: 100%
+      }
+    </style>
+    <google-map
+      latitude="[[markerLatitude]]" 
+      longitude="[[markerLongitude]]" 
+      zoom=20
+      api-key="{{apiKey}}" 
+      additional-map-options="[[additionalMapOptions]]">
+      <google-map-marker 
+        latitude="{{markerLatitude}}" 
+        longitude="{{markerLongitude}}" 
+        draggable="true">
+      </google-map-marker>
+    </google-map>
+  </template>
+
+  <script src="Geohash.js" type="text/javascript">
+  </script>
+  <script src="../../../target/scala-2.10/geohashvisualizer-fastopt.js" type="text/javascript">
+  </script>
+  <script>
+    class PliGeovisMap extends Polymer.Element {
+      static get is() { return 'pli-geovis-map'; }
+      static get properties() {
+        return {
+          apiKey: {
+            type: String,
+            notify: true
+          },
+          additionalMapOptions: {
+            type: Object,
+            value: {
+              "mapTypeControlOptions": {
+                "position": 6
+              }
+            }
+          },
+          markerGeohash: {
+            type: String,
+            value: "9vg49ned3",
+            notify: true,
+            observer: "_updatedGeohash"
+          },
+          markerLatitude: {
+            type: String,
+            notify: true,
+            observer: "_updatedLatitude"
+          },
+          markerLongitude: {
+            type: String,
+            notify: true,
+            observer: "_updatedLongitude"
+          },
+          bindingUpdate: {
+            type: String,
+            value: ""
+          }
+          
+        };
+      }
+
+      _updatedGeohash(newVal, oldVal) {
+        if ((this.bindingUpdate == "") && (newVal != oldVal)) {
+          this.bindingUpdate = "_updatedGeohash";
+          var scalaValue = Library.salutation(String(newVal));
+          var geohash = skipNullAndUndefined(this.markerGeohash, "");
+          if (geohash.length > 0) {
+            this.updateLongitudeAndLatitudeWithGeohashLongLat(geohash);
+          }
+          this.bindingUpdate = "";
+        }
+      }
+
+      _updatedLatitude(newVal, oldVal) {
+        if ((this.bindingUpdate == "") && (newVal != oldVal)) {
+          this.bindingUpdate = "_updatedLatitude";
+          var latitude = skipNullAndUndefined(String(this.markerLatitude), "");
+          var longitude = skipNullAndUndefined(String(this.markerLongitude), "");
+          if ((latitude.length > 0) && (longitude.length > 0)) {
+            this.syncLongitudeLatitudeWithGeohash(latitude, longitude);
+          }
+          this.bindingUpdate = "";
+        }
+      }
+
+      _updatedLongitude(newVal, oldVal) {
+        if ((this.bindingUpdate == "") && (newVal != oldVal)) {
+          this.bindingUpdate = "_updatedLongitude";
+          var latitude = skipNullAndUndefined(String(this.markerLatitude), "");
+          var longitude = skipNullAndUndefined(String(this.markerLongitude), "");
+          if ((latitude.length > 0) && (longitude.length > 0)) {
+            this.syncLongitudeLatitudeWithGeohash(latitude, longitude);
+          }
+          this.bindingUpdate = "";
+        }
+      }
+
+      updateLongitudeAndLatitudeWithGeohashLongLat(geohashString) {
+        //ASSERT: geohash is a nonEmpty String
+        var geohashPrecisionMax = 15 //TODO: Move to configuration
+        var geohashStringMax =
+          (geohashString.length <= geohashPrecisionMax)
+            ? geohashString
+            : geohashString.substring(0, geohashPrecisionMax);
+        if (geohashStringMax !== this.markerGeohash) {
+          this.markerGeohash = geohashStringMax;
+        }
+        var coordinate = Geohash.decode(geohashStringMax);
+        this.markerLatitude = String(coordinate.lat);
+        this.markerLongitude = String(coordinate.lon);
+      }
+
+      syncLongitudeLatitudeWithGeohash(latitudeString, longitudeString) {
+        var geohashPrecisionDefault = 9;
+        var geohashString = skipNullAndUndefined(this.markerGeohash, "");
+        var geohashPrecisionNumber =
+          (geohashString.length > 0)
+            ? ((geohashString.length >= 3)
+                ? geohashString.length
+                : 3
+              )
+            : geohashPrecisionDefault
+        var geohash = Geohash.encode(latitudeString, longitudeString, geohashPrecisionNumber);
+        this.updateLongitudeAndLatitudeWithGeohashLongLat(geohash);
+      }
+    }
+
+    window.customElements.define(PliGeovisMap.is, PliGeovisMap);
+
+    function skipNullAndUndefined(arg1, defaultValue) {
+      return skipNullAndUndefineds(arg1, defaultValue);
+    }
+    
+    function skipNullAndUndefineds() {
+        var len = arguments.length;
+        for (var i = 0; i < len; i++) {
+            if ((arguments[i] !== null) && (arguments[i] !== undefined)) {
+                return arguments[i];
+            }
+        }
+        return null;
+    }
+  </script>
+</dom-module>

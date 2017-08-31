@@ -1,0 +1,7 @@
+{
+  "name": "pli-geovis-web",
+  "short_name": "pli-geovis-web",
+  "description": "PLI Geostack Visualizer",
+  "start_url": "/",
+  "display": "standalone"
+}
