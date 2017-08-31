@@ -1,0 +1,52 @@
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../../bower_components/paper-styles/element-styles/paper-material-styles.html">
+
+<dom-module id="pli-geovis-control">
+  <template>
+    <style is="custom-style" include="paper-material-styles">
+      .paper-material {
+        display: inline-block;
+        background-color: white;
+      }
+      #controlPanel {
+        position: absolute;
+        z-index: 1;
+        top: 20px;
+        left: 20px;
+      }
+      paper-input {
+        padding: 0 8px 0 8px;
+      }
+    </style>
+    <div id="controlPanel" class="paper-material" elevation="1">
+      <paper-input label="Geohash" value="{{geohash}}"></paper-input>
+      <paper-input label="Latitude" value="{{latitude}}"></paper-input>
+      <paper-input label="Longitude" value="{{longitude}}"></paper-input>
+    </div>
+  </template>
+
+  <script>
+    class PliGeovisControl extends Polymer.Element {
+      static get is() { return 'pli-geovis-control'; }
+      static get properties() {
+        return {
+          geohash: {
+            type: String,
+            notify: true
+          },
+          latitude: {
+            type: String,
+            notify: true
+          },
+          longitude: {
+            type: String,
+            notify: true
+          }
+        };
+      }
+    }
+
+    window.customElements.define(PliGeovisControl.is, PliGeovisControl);
+  </script>
+</dom-module>
