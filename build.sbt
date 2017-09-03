@@ -1,12 +1,10 @@
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.19")
-
 enablePlugins(ScalaJSPlugin)
 
 name := "GeohashVisualizer"
 
 version := "0.1-SNAPSHOT"
 
-//scalaVersion := "2.12.2"
+scalaVersion := "2.12.3"
 
 //scalaJSUseMainModuleInitializer := true
 
