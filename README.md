@@ -6,6 +6,8 @@ PLI Geostack Visualizer
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
 
+Then install [sbt](http://www.scala-sbt.org/).
+
 ## Viewing Your Application
 
 ```
@@ -15,6 +17,7 @@ $ polymer serve
 ## Building Your Application
 
 ```
+$ sbt fastOptJS
 $ polymer build
 ```
 
