@@ -74,6 +74,7 @@
         if ((this.bindingUpdate == "") && (newVal != oldVal)) {
           this.bindingUpdate = "_updatedGeohash";
           var scalaValue = Library.salutation(String(newVal));
+          console.log(scalaValue);
           var geohash = skipNullAndUndefined(this.markerGeohash, "");
           if (geohash.length > 0) {
             this.updateLongitudeAndLatitudeWithGeohashLongLat(geohash);
