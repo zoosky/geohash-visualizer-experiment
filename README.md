@@ -8,6 +8,10 @@ First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polyme
 
 Then install [sbt](http://www.scala-sbt.org/).
 
+Set your Google Maps API key in `/src/main/js/pli-geovis-app.html`
+
+         api-key="please-fill-in-your-google-map-key-here"
+
 ## Viewing Your Application
 
 ```
